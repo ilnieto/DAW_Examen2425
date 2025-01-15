@@ -8,6 +8,7 @@
   <!-- <link rel="stylesheet" href="./assets/main.css">  SOLO CON MVC ACTIVO -->
 </head>
 <body>
+
     <header>
         <h1>Tienda de Cartas Mágicas</h1>
         <nav>
@@ -26,7 +27,7 @@
             <!-- Filtros para buscar cartas -->
             <form method="GET" action="">
                 <div class="filtros">
-                   
+
                     <label for="tipo">Tipo:</label>
                     <select name="tipo" id="tipo">
                         <option value="">Todos</option>
@@ -72,25 +73,32 @@
                     </tr>
                 </thead>
                  <tbody>
-                    <!-- Ejemplo de una fila de carta -->
+
+                    @foreach ( $cartas as $carta )
                     <tr>
-                        <td>Dragón de Fuego</td>
-                        <td>Criatura</td>
-                        <td>Legendaria</td>
-                        <td>24€</td>
-                        <td>5</td>
-                        <td>
-                            <form action="" method="POST">
-                                <input type="hidden" name="carta_id" value="">
-                                <label for="cantidad_1">Cantidad:</label>
-                                <input type="number" id="cantidad_1" name="cantidad" min="1" max="5" value="1" required>
-                                <button type="submit">Añadir</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <td>{{$carta->nombre}}</td>
+                    <td>{{$carta->habilidad}}</td>
+                    <td>{{$carta->rareza}}</td>
+                    <td>{{$carta->precio}}</td>
+                    <td>{{$carta->stock}}</td>
+                    <td>
+                        <form action="{{route('carrito')}}" method="POST">
+
+                            @csrf
+                            <input type="hidden" name="carta_id" value="{{$carta->id}}">
+                            <label for="cantidad_1">Cantidad:</label>
+                            <input type="number" id="cantidad_1" name="cantidad" min="1" max="{{$carta->stock}}" value="1" required>
+                            <button type="submit">Añadir</button>
+                        </form>
+                    </td>
+                </tr>
+                    @endforeach
+
+                    <!-- Ejemplo de una fila de carta -->
+
                 </tbody>
             </table>
-           
+
         </div>
     </main>
     <footer>
