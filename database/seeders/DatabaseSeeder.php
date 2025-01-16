@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         //Añadir seeders para que los ejecute :)
         $this->call([
             AdminUserSeeder::class,
+            CartasSeeder::class,
+            PedidosSeeder::class,
+            DetallesPedidosSeeder::class
         ]);
 
         // User::factory(10)->create();
