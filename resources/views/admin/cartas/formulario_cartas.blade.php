@@ -21,7 +21,8 @@
     <main class="formulario-carta">
         <div class="container">
             <h2>Añadir Nueva Carta</h2>
-            <form action="/admin/cartas/crear" method="POST">
+            <form action="{{route('cartas.store')}}" method="POST">
+                @csrf
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Ej: Dragón de Fuego" required>
                 

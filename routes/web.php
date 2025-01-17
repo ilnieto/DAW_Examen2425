@@ -26,3 +26,5 @@ Route::get('/users', function(){
 });
 
 Route::post('carrito', [PedidoController::class, 'anadirCarrito'])->name('carrito');
+
+Route::resource('cartas', CartaController::class);

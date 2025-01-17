@@ -21,7 +21,7 @@
     <main class="cartas">
         <div class="container">
             <h2>Gestión de Cartas</h2>
-            <a href="" class="btn">Añadir Nueva Carta</a>
+            <a href="{{route('cartas.create')}}" class="btn">Añadir Nueva Carta</a>
             <table>
                 <thead>
                     <tr>
