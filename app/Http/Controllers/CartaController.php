@@ -13,9 +13,15 @@ class CartaController extends Controller
      */
     public function index()
     {
-        $cartas = Carta::all();
-        //if(session()->has('carrito')) dd(session('carrito'));
-        return view('frontend.catalogo', compact('cartas'));
+        
+        if(Auth::user()->role == 'admin'){
+            $cartas = Carta::all();
+            return view('admin.cartas.cartas', compact('cartas'));
+        }else{
+            $cartas = Carta::where('stock', '>', 0)->get();
+            return view('frontend.catalogo', compact('cartas'));
+        }
+        
     }
 
     /**
@@ -23,7 +29,6 @@ class CartaController extends Controller
      */
     public function create()
     {
-
         if(Auth::user()->role == 'admin'){
             return view('admin.cartas.formulario_cartas');
         }
@@ -34,7 +39,6 @@ class CartaController extends Controller
      */
     public function store(Request $request)
     {
-        
         $carta = new Carta();
         $carta->nombre = $request->nombre;
         $carta->precio = $request->precio;
@@ -42,6 +46,7 @@ class CartaController extends Controller
         $carta->rareza = $request->rareza;
         $carta->stock = $request->stock;
         $carta->save();
+        return redirect()->route('admin_cartas')->with('success', 'Carta añadida correctamente');
     }
 
     /**
@@ -57,7 +62,9 @@ class CartaController extends Controller
      */
     public function edit(Carta $carta)
     {
-        //
+        if(Auth::user()->role == 'admin'){
+            return view('admin.cartas.formulario_cartas', compact('carta'));
+        }
     }
 
     /**
@@ -65,7 +72,13 @@ class CartaController extends Controller
      */
     public function update(Request $request, Carta $carta)
     {
-        //
+        $carta->nombre = $request->nombre;
+        $carta->precio = $request->precio;
+        $carta->tipo = $request->tipo;
+        $carta->rareza = $request->rareza;
+        $carta->stock = $request->stock;
+        $carta->update();
+        return redirect()->route('admin_cartas')->with('success', 'Carta actualizada correctamente');
     }
 
     /**
@@ -73,6 +86,11 @@ class CartaController extends Controller
      */
     public function destroy(Carta $carta)
     {
-        //
+        try {
+            $carta->delete();
+            return redirect()->route('cartas.index')->with('success', 'Carta eliminada correctamente');
+        } catch (\Exception $e) {
+            return redirect()->route('cartas.index')->with('error', 'No se puede eliminar esta carta porque está asociada a pedidos existentes');
+        }
     }
 }

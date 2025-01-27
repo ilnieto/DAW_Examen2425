@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('detalle_pedidos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('pedido_id')->constrained();
-            $table->foreignId('carta_id')->constrained();
+            $table->foreignId('pedido_id')->constrained()->onDelete('cascade');
+            $table->foreignId('carta_id')->constrained()->onDelete('cascade');
             $table->integer('cantidad');
             $table->double('precioUnitario');
             $table->double('precioTotal');

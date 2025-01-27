@@ -9,7 +9,7 @@ class Pedido extends Model
     //
     protected $guarded = [];
 
-    public function usuario()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
