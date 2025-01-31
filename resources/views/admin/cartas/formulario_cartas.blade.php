@@ -1,27 +1,46 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Añadir carta</title>
-     <link rel="stylesheet" href="../../../assets/main.css">
-</head>
-<body>
-    <header class="header-admin">
-        <h1>Tienda de Cartas Mágicas</h1>
-        <nav>
-            <ul>
-                <li><a href="">Cartas</a></li>
-                <li><a href="">Pedidos</a></li>
-                <li><a href="">Cerrar Sesión (Iván)</a></li>
-         
-            </ul>
-        </nav>
-    </header>
-    <main class="formulario-carta">
-        <div class="container">
+@extends('index')
+@section('title', 'Formulario cartas')
+@section('contenido')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    <div class="container">
+        @isset($carta)
+        <h2>Modificar Carta</h2>
+            <form action="{{route('cartas.update', $carta)}}" method="POST">
+                @csrf
+                @method('PUT')
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" value="{{$carta->nombre}}" name="nombre" placeholder="Ej: Dragón de Fuego" required>
+                
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="criatura" @if($carta->tipo == 'criatura') selected @endif>Criatura</option>
+                    <option value="hechizo" @if($carta->tipo == 'hechizo') selected @endif>Hechizo</option>
+                    <option value="artefacto" @if($carta->tipo == 'artefacto') selected @endif>Artefacto</option>
+                </select>
+                
+                <label for="rareza">Rareza:</label>
+                <select id="rareza" name="rareza" required>
+                    <option value="común" @if($carta->rareza == 'común') selected @endif>Común</option>
+                    <option value="rara" @if($carta->rareza == 'rara') selected @endif>Rara</option>
+                    <option value="legendaria" @if($carta->rareza == 'legendaria') selected @endif>Legendaria</option>
+                </select>
+                
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" placeholder="Ej: 500" min="0" value="{{$carta->precio}}" required>
+                
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" placeholder="Ej: 10" min="0" value="{{$carta->stock}}"  required>
+                
+                <button type="submit">Modificar Carta</button>
+            </form>
+        @else
             <h2>Añadir Nueva Carta</h2>
-            <form action="/admin/cartas/crear" method="POST">
+            <form action="{{route('cartas.store')}}" method="POST">
+                @csrf
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Ej: Dragón de Fuego" required>
                 
@@ -47,10 +66,6 @@
                 
                 <button type="submit">Añadir Carta</button>
             </form>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Tienda de Cartas Mágicas</p>
-    </footer>
-</body>
-</html>
+        @endif
+    </div>
+@endsection

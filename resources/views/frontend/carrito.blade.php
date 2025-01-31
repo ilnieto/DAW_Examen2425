@@ -1,57 +1,62 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito</title>
-  <link rel="stylesheet" href="../../assets/main.css">
-  <!-- <link rel="stylesheet" href="./assets/main.css">  SOLO CON MVC ACTIVO -->
-</head>
-<body>
-    <header>
-        <h1>Tienda de Cartas Mágicas</h1>
-        <header>
-        <h1>Tienda de Cartas Mágicas</h1>
-        <nav>
-            <ul>
-                <li><a href="catalogo.php">Catálogo</a></li>
-                <li><a href="carrito.php">Carrito</a></li>
-                <li><a href="">Cerrar Sesión (Iván)</a></li>
-                <li><a href="login.php">Iniciar Sesión</a></li>
-            </ul>
-        </nav>
-    </header>
-       
-    </header>
-    <main class="carrito">
-        <div class="container">
-            <h2>Carrito de la Compra</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las cartas del carrito se generarán dinámicamente -->
-                </tbody>
-            </table>
-            <div class="total">
-                <p>Total: <span id="total">0.00</span> euros</p>
+@extends('index')
+@section('title', 'Carrito')
+@section('contenido')
+    <div class="container">
+        <h2>Carrito de la Compra</h2>
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
-            <form action="" method="POST">
-                <button type="submit">Confirmar Pedido</button>
-            </form>
-            <form action="" method="POST">
-                <button type="submit">Eliminar Carrito</button>
-            </form>
+        @endif
+
+        @if(session('carrito'))
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las cartas del carrito se generarán dinámicamente -->
+                @php
+                    $total = 0;
+                @endphp
+                @foreach(session('carrito') as $carta)
+                    @php
+                        $total += ($carta['precio_carta'] * $carta['cantidad']);
+                    @endphp
+                    <tr>
+                        <td>{{$carta['nombre_carta']}}</td>
+                        <td>{{$carta['cantidad']}}</td>
+                        <td>{{$carta['precio_carta']}}</td>
+                        <td>{{$carta['precio_carta'] * $carta['cantidad']}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        
+        <div class="total">
+            <p>Total: <span id="total">{{$total}}</span> euros</p>
         </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Tienda de Cartas Mágicas</p>
-    </footer>
-</body>
-</html>
+        <form action="{{route('carrito.store')}}" method="POST">
+            @csrf
+            <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+            <input type="hidden" name="total" value="{{$total}}">
+            <button type="submit">Confirmar Pedido</button>
+        </form>
+        <form action="{{route('carrito.eliminarCarrito')}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Eliminar Carrito</button>
+        </form>
+        @else
+            <p>No hay cartas en el carrito</p>
+        @endif
+    </div>
+
+@endsection

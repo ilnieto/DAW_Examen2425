@@ -12,7 +12,8 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        //
+        $pedidos = Pedido::all();
+        return view('admin.pedidos.pedidos', compact('pedidos'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -36,7 +37,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        //
+        return view('pdf', compact('pedido'));
     }
 
     /**
@@ -61,25 +62,5 @@ class PedidoController extends Controller
     public function destroy(Pedido $pedido)
     {
         //
-    }
-
-    public function anadirCarrito(Request $request)
-    {
-      
-        $carrito = $request->session()->get('carrito', []);
-        //guardar en carrito id, nombre, precio de carta y cantidad elegida
-        $carta = Carta::findOrFail($request->carta_id);
-        $datosCarrito = [
-            'id_carta' => $carta->id,
-            'nombre_carta' => $carta->nombre,
-            'precio_carta'=> $carta->precio,
-            'cantidad' => $request->cantidad
-
-        ];
-        //añadir lo que llega al carrito en sesion
-        array_push($carrito, $datosCarrito);
-
-        $request->session()->put('carrito', $carrito);
-        return redirect()->route('catalogo');
     }
 }

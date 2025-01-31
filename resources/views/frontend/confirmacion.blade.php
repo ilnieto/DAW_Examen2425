@@ -1,33 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de Pedido</title>
-    <link rel="stylesheet" href="../../assets/main.css">
-</head>
-<body>
-    <header>
-        <h1>Tienda de Cartas Mágicas</h1>
-        <nav>
-            <ul>
-                <li><a href="catalogo.php">Catálogo</a></li>
-                <li><a href="carrito.php">Carrito</a></li>
-                <li><a href="">Cerrar Sesión (Iván)</a></li>
-                <li><a href="login.php">Iniciar Sesión</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main class="confirmacion">
-        <div class="container">
-            <h2>Pedido Confirmado</h2>
-            <p>Gracias por tu compra, <strong><!-- Nombre del usuario --></strong>.</p>
-            <p>Hemos generado un PDF con los detalles de tu pedido.</p>
-            <a href="/pedidos/pdf/pedido_<id>.pdf" target="_blank">Descargar PDF</a>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Tienda de Cartas Mágicas</p>
-    </footer>
-</body>
-</html>
+@extends('index')
+@section('title', 'Confirmación de Pedido')
+@section('contenido')
+    <div class="container">
+        <h2>¡Pedido Confirmado!</h2>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        <p>Gracias por tu compra.</p>
+        <form action="{{route('pdf')}}" method="POST">
+            @csrf
+            @method('GET')
+            <input type="hidden" name="pedido" value="{{session('pedido')}}">
+            <button type="submit" class="btn btn-primary">Ver factura</button>
+        </form>
+        <a href="{{ route('catalogo') }}" class="btn btn-primary">Volver al catálogo</a>
+    </div>
+@endsection

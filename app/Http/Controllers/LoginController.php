@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use User;
 
 class LoginController extends Controller
 {
@@ -15,7 +16,7 @@ class LoginController extends Controller
     public function login(Request $request) {
 
         if(Auth::attempt(['email'=>$request->username , 'password'=>$request->password])) {
-
+            
             if(Auth::user()->role == 'admin'){
                 return redirect()->intended(route('admin_cartas'));
             }
@@ -26,6 +27,8 @@ class LoginController extends Controller
 
         }
 
+        
+
         return redirect()->route('login')->with( 'error' , 'Usuario o contraseña incorrecto.');
 
     }
@@ -34,7 +37,7 @@ class LoginController extends Controller
 
         Auth::logout();
         $request->session()->invalidate();
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente');
 
     }
 
