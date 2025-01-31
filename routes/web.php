@@ -47,5 +47,7 @@ Route::resource('cartas', CartaController::class);
 
 Route::resource('carrito', CarritoController::class);
 
+Route::get('/pdf', [CarritoController::class, 'pdf'])->name('pdf');
+
 
 //Route::get('editar', CartaController::class)->middleware(['auth'], 'role:admin')->name('editar_cartas');

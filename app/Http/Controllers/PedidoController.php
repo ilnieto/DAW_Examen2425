@@ -37,7 +37,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        return view('frontend.carrito', compact('pedido'));
+        return view('pdf', compact('pedido'));
     }
 
     /**

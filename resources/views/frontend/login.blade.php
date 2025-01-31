@@ -8,7 +8,7 @@
     </div>
 @endif
     <div class="container">
-        <h2>Login Administrador</h2>
+        <h2>Login</h2>
         <form action="{{route('login')}}" method="POST">
             @csrf
             

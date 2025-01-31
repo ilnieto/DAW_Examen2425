@@ -47,7 +47,7 @@ class CarritoController extends Controller
             $carta->save();
         }
         $request->session()->forget('carrito');
-        return redirect()->route('carrito.confirmarPedido')->with('success', 'Pedido realizado correctamente');
+        return redirect()->route('carrito.confirmarPedido')->with('success', 'Pedido realizado correctamente')->with('pedido', $pedido->id);
     }
 
     
@@ -75,5 +75,11 @@ class CarritoController extends Controller
     {
         session()->forget('carrito');
         return redirect()->back()->with('success', 'Carrito eliminado correctamente');
+    }
+
+    public function pdf(Request $request)
+    {
+        $pedido = Pedido::findOrFail($request->pedido);
+        return view('plantillaPdf', compact('pedido'));
     }
 }

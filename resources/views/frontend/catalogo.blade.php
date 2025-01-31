@@ -9,6 +9,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <!-- Filtros para buscar cartas -->
         <form method="GET" action="{{route('catalogo.index')}}">
@@ -17,17 +22,17 @@
                 <label for="tipo">Tipo:</label>
                 <select name="tipo" id="tipo">
                     <option value="">Todos</option>
-                    <option value="criatura" {{ request('tipo') == 'criatura' ? 'selected' : '' }}>Criatura</option>
-                    <option value="hechizo" {{ request('tipo') == 'hechizo' ? 'selected' : '' }}>Hechizo</option>
-                    <option value="artefacto" {{ request('tipo') == 'artefacto' ? 'selected' : '' }}>Artefacto</option>
+                    <option value="criatura">Criatura</option>
+                    <option value="hechizo">Hechizo</option>
+                    <option value="artefacto">Artefacto</option>
                 </select>
 
                 <label for="rareza">Rareza:</label>
                 <select name="rareza" id="rareza">
                     <option value="">Todas</option>
-                    <option value="común" {{ request('rareza') == 'común' ? 'selected' : '' }}>Común</option>
-                    <option value="rara" {{ request('rareza') == 'rara' ? 'selected' : '' }}>Rara</option>
-                    <option value="legendaria" {{ request('rareza') == 'legendaria' ? 'selected' : '' }}>Legendaria</option>
+                    <option value="común">Común</option>
+                    <option value="rara">Rara</option>
+                    <option value="legendaria">Legendaria</option>
                 </select>
 
                 <label for="precio">Precio máximo:</label>
@@ -36,10 +41,10 @@
                 <!-- Nuevo campo para ordenar -->
                 <label for="orden">Ordenar por:</label>
                 <select name="orden" id="orden">
-                    <option value="nombre_asc" {{ request('orden') == 'nombre_asc' ? 'selected' : '' }}>Nombre (A-Z)</option>
-                    <option value="nombre_desc" {{ request('orden') == 'nombre_desc' ? 'selected' : '' }}>Nombre (Z-A)</option>
-                    <option value="precio_asc" {{ request('orden') == 'precio_asc' ? 'selected' : '' }}>Precio (menor a mayor)</option>
-                    <option value="precio_desc" {{ request('orden') == 'precio_desc' ? 'selected' : '' }}>Precio (mayor a menor)</option>
+                    <option value="nombre_asc">Nombre (A-Z)</option>
+                    <option value="nombre_desc">Nombre (Z-A)</option>
+                    <option value="precio_asc">Precio (menor a mayor)</option>
+                    <option value="precio_desc">Precio (mayor a menor)</option>
                 </select>
 
                 <button type="submit">Aplicar Filtros</button>

@@ -9,6 +9,12 @@
             </div>
         @endif
         <p>Gracias por tu compra.</p>
+        <form action="{{route('pdf')}}" method="POST">
+            @csrf
+            @method('GET')
+            <input type="hidden" name="pedido" value="{{session('pedido')}}">
+            <button type="submit" class="btn btn-primary">Ver factura</button>
+        </form>
         <a href="{{ route('catalogo') }}" class="btn btn-primary">Volver al catálogo</a>
     </div>
 @endsection
